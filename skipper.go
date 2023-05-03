@@ -1036,7 +1036,10 @@ func createDataClients(o Options, cr *certregistry.CertRegistry) ([]routing.Data
 		clients = append(clients, etcdClient)
 	}
 
-	var kubernetesClient *kubernetes.Client
+	var (
+		kubernetesClient *kubernetes.Client
+		err              error
+	)
 	if o.Kubernetes {
 		kops := o.KubernetesDataClientOptions()
 		kops.CertificateRegistry = cr

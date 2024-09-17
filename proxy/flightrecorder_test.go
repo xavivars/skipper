@@ -49,7 +49,6 @@ func TestFlightRecorder(t *testing.T) {
 
 	flightRecorder := xtrace.NewFlightRecorder()
 	flightRecorder.Start()
-	defer flightRecorder.Stop()
 
 	spec := diag.NewLatency()
 	fr := make(filters.Registry)

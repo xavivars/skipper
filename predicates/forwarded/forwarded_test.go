@@ -162,6 +162,17 @@ func TestForwardedHost(t *testing.T) {
 		},
 		matches: true,
 		isError: false,
+	}, {
+		msg:  "wildcard host should match",
+		host: "^(*[.]example[.]org[.]?(:[0-9]+)?)$", // *.example.org
+		r: request{
+			url: "https://test.example.com/index.html",
+			headers: http.Header{
+				"Forwarded": []string{`host="test.example.org"`},
+			},
+		},
+		matches: true,
+		isError: false,
 	}}
 
 	for _, tc := range testCases {
@@ -173,7 +184,7 @@ func TestForwardedHost(t *testing.T) {
 			hasError := err != nil
 			if hasError || tc.isError {
 				if !tc.isError {
-					t.Fatal("Predicate creation failed")
+					t.Fatalf("Predicate creation failed, %s", err)
 				}
 
 				if !hasError {

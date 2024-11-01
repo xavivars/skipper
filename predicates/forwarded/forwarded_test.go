@@ -164,7 +164,7 @@ func TestForwardedHost(t *testing.T) {
 		isError: false,
 	}, {
 		msg:  "wildcard host should match",
-		host: "^(*[.]example[.]org[.]?(:[0-9]+)?)$", // *.example.org
+		host: "^([a-z0-9]+(-[a-z0-9]+)?[.]example[.]org[.]?(:[0-9]+)?)$", // *.example.org
 		r: request{
 			url: "https://test.example.com/index.html",
 			headers: http.Header{
@@ -172,6 +172,28 @@ func TestForwardedHost(t *testing.T) {
 			},
 		},
 		matches: true,
+		isError: false,
+	}, {
+		msg:  "wildcard 2 host should match",
+		host: "^([a-z0-9]+(-[a-z0-9]+)?[.]example[.]org[.]?(:[0-9]+)?)$", // *.example.org
+		r: request{
+			url: "https://test-v2.example.com/index.html",
+			headers: http.Header{
+				"Forwarded": []string{`host="test-v2.example.org"`},
+			},
+		},
+		matches: true,
+		isError: false,
+	}, {
+		msg:  "wildcard 3 host shouldn't match",
+		host: "^([a-z0-9]+(-[a-z0-9]+)?[.]example[.]org[.]?(:[0-9]+)?)$", // *.example.org
+		r: request{
+			url: "https://test-.example.com/index.html",
+			headers: http.Header{
+				"Forwarded": []string{`host="test-.example.com"`},
+			},
+		},
+		matches: false,
 		isError: false,
 	}}
 

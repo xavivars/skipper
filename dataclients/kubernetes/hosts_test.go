@@ -20,7 +20,7 @@ func TestHostsToRegex(t *testing.T) {
 		{
 			msg:   "wildcard",
 			host:  "*.example.org",
-			regex: "^([a-z0-9]+(-[a-z0-9]+)?[.]example[.]org[.]?(:[0-9]+)?)$",
+			regex: "^([a-z0-9]+((-[a-z0-9]+)?)*[.]example[.]org[.]?(:[0-9]+)?)$",
 		},
 	} {
 		t.Run(ti.msg, func(t *testing.T) {
